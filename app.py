@@ -2,12 +2,37 @@ from fastapi import FastAPI, Request, Response, status
 from datetime import datetime
 import json
 import os
+from pydantic import BaseModel
+from enum import Enum
 
 app = FastAPI()
 
 HISTORY_LIMIT = 10
 HISTORY_STORAGE = "storage"
 
+class Status(str, Enum):
+    ok = "ok"
+    error = "error"
+
+class Methods(str, Enum):
+    GET = "GET"
+    POST = "POST"
+    PUT = "PUT"
+    DELETE = "DELETE"
+    PATCH = "PATCH"
+    OPTIONS = "OPTIONS"
+    HEAD = "HEAD"
+
+class Answer(BaseModel):
+    status: Status
+    message: str
+
+class RequestData(BaseModel):
+    data: dict
+    method: Methods
+    url: str
+    headers: dict
+    time: str
 
 def store_last_request(
         request_data,
@@ -34,6 +59,8 @@ def store_last_request(
     with open(filename, "w") as f:
         json.dump(data, f)
 
+
+
 @app.get("/", status_code=status.HTTP_200_OK)
 @app.post("/", status_code=status.HTTP_200_OK)
 @app.put("/", status_code=status.HTTP_200_OK)
@@ -48,7 +75,7 @@ def store_last_request(
 @app.patch("/{namespace}", status_code=status.HTTP_200_OK)
 @app.options("/{namespace}", status_code=status.HTTP_200_OK)
 @app.head("/{namespace}", status_code=status.HTTP_200_OK)
-async def catch(request: Request, response: Response, namespace: str = "requests"):
+async def catch(request: Request, response: Response, namespace: str = "requests") -> Answer:
     try:
         json = await request.json()
     except:
@@ -65,7 +92,7 @@ async def catch(request: Request, response: Response, namespace: str = "requests
 
     response.status_code = status.HTTP_200_OK
 
-    return {"status": "ok", "message": "Request catched."}
+    return Answer(status="ok", message="Request catched.")
 
 @app.get("/api/__help", status_code=status.HTTP_200_OK)
 def help():
@@ -89,7 +116,7 @@ def help():
 
 @app.get("/api/__last_request", status_code=status.HTTP_200_OK)
 @app.get("/api/__last_request/{namespace}", status_code=status.HTTP_200_OK)
-async def last_requests(namespace: str = "requests"):
+async def last_requests(namespace: str = "requests") -> Answer|RequestData:
     filename = f"{HISTORY_STORAGE}/{namespace}.json"
     try:
         with open(filename, "r") as f:
@@ -98,15 +125,16 @@ async def last_requests(namespace: str = "requests"):
         data = []
 
     if len(data) == 0:
-        return {"status": "error", "message": "No requests found."}
-    return data[-1]
+        return Answer(status="error", message="No requests found.")
+
+    return RequestData(**data[-1])
 
 
 @app.get("/api/__history/{id}", status_code=status.HTTP_200_OK)
 @app.get("/api/__history", status_code=status.HTTP_200_OK)
 @app.get("/api/__history/{namespace}/{id}", status_code=status.HTTP_200_OK)
 @app.get("/api/__history/{namespace}", status_code=status.HTTP_200_OK)
-async def history(id: int = None, namespace: str = "requests"):
+async def history(id: int = None, namespace: str = "requests")->Answer|RequestData|list[RequestData]:
     filename = f"{HISTORY_STORAGE}/{namespace}.json"
     try:
         with open(filename, "r") as f:
@@ -116,18 +144,18 @@ async def history(id: int = None, namespace: str = "requests"):
 
     if id is not None:
         if len(data) == 0:
-            return {"status": "error", "message": "No requests found."}
-        return data[-id]
-    return data
+            return Answer(status="error", message="No requests found.")
+        return RequestData(**data[-id])
+    return [RequestData(**d) for d in data]
 
 @app.get("/api/__clear", status_code=status.HTTP_200_OK)
 @app.get("/api/__clear/{namespace}", status_code=status.HTTP_200_OK)
-async def clear_history(namespace: str = "requests"):
+async def clear_history(namespace: str = "requests")->Answer:
     filename = f"{HISTORY_STORAGE}/{namespace}.json"
     with open(filename, "w") as f:
         json.dump([], f)
 
-    return {"status": "ok", "message": "History cleared."}
+    return Answer(status="ok", message="History cleared.")
 
 if __name__ == "__main__":
     import uvicorn
