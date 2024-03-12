@@ -5,6 +5,7 @@ on:
     paths:
       - "Dockerfile"
       - "requirements.txt"
+      - "compose.yml"
   pull_request:
     paths:
       - "Dockerfile"
