@@ -2,13 +2,13 @@ GET https://catcher.rs.shadoll.dev/api/__help
 ###
 GET https://catcher.rs.shadoll.dev/api/__last_request
 ###
-GET https://catcher.rs.shadoll.dev/__history__
+GET https://catcher.rs.shadoll.dev/api/__history
 ###
-GET https://catcher.rs.shadoll.dev/__history__/1
+GET https://catcher.rs.shadoll.dev/api/__history/1
 ###
 GET https://catcher.rs.shadoll.dev/api/__clear
 ###
-POST https://catcher.rs.shadoll.dev/
+POST https://catcher.rs.shadoll.dev
 Content-Type: application/json
 
 {
