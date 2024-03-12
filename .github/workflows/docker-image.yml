@@ -2,17 +2,25 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    paths:
+      - "Dockerfile"
+      - "requirements.txt"
   pull_request:
-    branches: [ "main" ]
+    paths:
+      - "Dockerfile"
+      - "requirements.txt"
+      - "compose.yml"
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:latest
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag ghcr.io/shadoll/scatcher:latest
+
+      - name: Push the Docker image
+        run: docker push ghcr.io/shadoll/scatcher:latest
