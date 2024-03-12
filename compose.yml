@@ -5,7 +5,10 @@ networks:
 
 services:
   catcher:
-    image: ghcr.io/shadoll/scatcher:latest
+    image: scatcher
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - ./storage:/app/storage
     networks:
@@ -18,5 +21,4 @@ services:
       traefik.http.routers.catcher.tls: true
       traefik.http.routers.catcher.tls.certresolver: letsencrypt
       traefik.http.services.catcher.loadbalancer.server.port: 5000
-    env_file:
-      - .env
+
