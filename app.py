@@ -48,7 +48,7 @@ def store_last_request(
 @app.patch("/{namespace}", status_code=status.HTTP_200_OK)
 @app.options("/{namespace}", status_code=status.HTTP_200_OK)
 @app.head("/{namespace}", status_code=status.HTTP_200_OK)
-async def webhook_namespace_handler(request: Request, response: Response, namespace: str = "requests"):
+async def catch(request: Request, response: Response, namespace: str = "requests"):
     try:
         json = await request.json()
     except:
