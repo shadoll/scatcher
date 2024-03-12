@@ -1,1 +1,26 @@
-GET https://catcher.rs.shadoll.dev/__last_request__
+GET https://catcher.rs.shadoll.dev/api/__help
+###
+GET https://catcher.rs.shadoll.dev/api/__last_request
+###
+GET https://catcher.rs.shadoll.dev/__history__
+###
+GET https://catcher.rs.shadoll.dev/__history__/1
+###
+GET https://catcher.rs.shadoll.dev/api/__clear
+###
+POST https://catcher.rs.shadoll.dev/
+Content-Type: application/json
+
+{
+    "message": "Hello, World!",
+    "level": "info",
+    "tags": [
+        "example",
+        "hello-world"
+    ],
+    "extra": {
+        "key": "value",
+    }
+}
+###
+GET https://catcher.rs.shadoll.dev?message=Hello%2C%20World%21&level=info&tags=example&tags=hello-world&extra[key]=value
