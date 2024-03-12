@@ -5,7 +5,7 @@ networks:
 
 services:
   catcher:
-    image: shadoll/scatcher
+    image: ghcr.io/shadoll/scatcher:latest
     volumes:
       - ./storage:/app/storage
     networks:
