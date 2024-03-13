@@ -59,7 +59,7 @@ def store_last_request(request_data, namespace="requests"):
         data.pop(0)
 
     with open(filename, "w") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
 
 @app.get("/", status_code=status.HTTP_200_OK)
