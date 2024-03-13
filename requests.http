@@ -1,12 +1,30 @@
+/*
+Show quick usage manual
+*/
 GET https://catcher.rs.shadoll.dev/api/__help
+/*
+Show last request
+*/
 ###
 GET https://catcher.rs.shadoll.dev/api/__last_request
+/*
+Show all history
+*/
 ###
 GET https://catcher.rs.shadoll.dev/api/__history
+/*
+Show one history record by number
+*/
 ###
 GET https://catcher.rs.shadoll.dev/api/__history/1
+/*
+Clear all history records
+*/
 ###
 GET https://catcher.rs.shadoll.dev/api/__clear
+/*
+Requests catcher
+*/
 ###
 POST https://catcher.rs.shadoll.dev
 Content-Type: application/json
