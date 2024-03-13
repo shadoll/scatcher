@@ -38,4 +38,4 @@ curl -X GET http://localhost:8000/api/__clear
 ## Namespace
 The service also supports the use of "namespaces" in your requests. This feature allows you to separate and categorize your request streams. Simply include the namespace in your endpoint path when sending requests. For example, to catch a request under the namespace `test`, you would send your request to `/test`. Similarly, to retrieve the last request or view the history under the test namespace, you would send a GET request to `/api/__last_request/test` or `/api/__history/test`, respectively. This allows for more organized tracking and debugging of different request streams.
 
-For more detailed information and usage instructions, please refer to the full documentation available at the /doc or /redoc endpoints when the service is running.
+For more detailed information and usage instructions, please refer to the full documentation available at the `/doc` or `/redoc` endpoints when the service is running.
