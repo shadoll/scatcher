@@ -61,8 +61,17 @@ def store_last_request(request_data, namespace="requests"):
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
 
+
 def check_namespace(namespace):
-    if namespace == "__history" or namespace == "__last_request" or namespace == "__clear" or namespace == "__help" or namespace == "docs" or namespace == "redoc" or namespace == "api":
+    if (
+        namespace == "__history"
+        or namespace == "__last_request"
+        or namespace == "__clear"
+        or namespace == "__help"
+        or namespace == "docs"
+        or namespace == "redoc"
+        or namespace == "api"
+    ):
         return False
     return True
 
@@ -82,7 +91,9 @@ def check_namespace(namespace):
 @app.options("/{namespace}", status_code=status.HTTP_200_OK)
 @app.head("/{namespace}", status_code=status.HTTP_200_OK)
 async def catch(
-    request: Request, response: Response, namespace: str = "requests",
+    request: Request,
+    response: Response,
+    namespace: str = "requests",
 ) -> Answer:
     if not check_namespace(namespace):
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -129,7 +140,10 @@ def help():
 
 @app.get("/api/__last_request", status_code=status.HTTP_200_OK)
 @app.get("/api/__last_request/{namespace}", status_code=status.HTTP_200_OK)
-async def last_requests(response: Response, namespace: str = "requests",) -> Answer | RequestData:
+async def last_requests(
+    response: Response,
+    namespace: str = "requests",
+) -> Answer | RequestData:
     if not check_namespace(namespace):
         response.status_code = status.HTTP_400_BAD_REQUEST
         return Answer(status="error", message="Invalid namespace name provided.")
@@ -152,7 +166,8 @@ async def last_requests(response: Response, namespace: str = "requests",) -> Ans
 @app.get("/api/__history/{namespace}", status_code=status.HTTP_200_OK)
 async def history(
     response: Response,
-    id: int = 0, namespace: str = "requests",
+    id: int = 0,
+    namespace: str = "requests",
 ) -> Answer | RequestData | list[RequestData]:
     if not check_namespace(namespace):
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -173,8 +188,10 @@ async def history(
 
 @app.get("/api/__clear", status_code=status.HTTP_200_OK)
 @app.get("/api/__clear/{namespace}", status_code=status.HTTP_200_OK)
-async def clear_history(response: Response,
-    namespace: str = "requests",) -> Answer:
+async def clear_history(
+    response: Response,
+    namespace: str = "requests",
+) -> Answer:
     if not check_namespace(namespace):
         response.status_code = status.HTTP_400_BAD_REQUEST
         return Answer(status="error", message="Invalid namespace name provided.")
