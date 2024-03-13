@@ -166,7 +166,7 @@ async def last_requests(
 @app.get("/api/__history/{namespace}", status_code=status.HTTP_200_OK)
 async def history(
     response: Response,
-    id: int = 0,
+    id: int | None = None,
     namespace: str = "requests",
 ) -> Answer | RequestData | list[RequestData]:
     if not check_namespace(namespace):
