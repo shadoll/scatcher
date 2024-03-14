@@ -5,7 +5,7 @@ Scatcher is a service designed to intercept and store HTTP requests for debuggin
 This service is particularly useful for developers who want to inspect the exact requests being sent to their applications, especially when debugging complex issues related to request handling. It can be easily deployed using Docker, making it a convenient tool for development environments.
 
 ## Documentations
-Once the service is running, you can navigate to `/doc` or `/redoc` in your web browser to access the full documentation for all supported requests.
+Once the service is running, you can navigate to `/docs` or `/redoc` in your web browser to access the full documentation for all supported requests.
 
 ## Quick usage examples
 The main entry point of the service is the `/` endpoint, which is designed to catch and store all incoming HTTP requests, regardless of the method used (GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD). This allows you to inspect the details of any request sent to this endpoint.
@@ -38,4 +38,4 @@ curl -X GET http://localhost:8000/api/__clear
 ## Namespace
 The service also supports the use of "namespaces" in your requests. This feature allows you to separate and categorize your request streams. Simply include the namespace in your endpoint path when sending requests. For example, to catch a request under the namespace `test`, you would send your request to `/test`. Similarly, to retrieve the last request or view the history under the test namespace, you would send a GET request to `/api/__last_request/test` or `/api/__history/test`, respectively. This allows for more organized tracking and debugging of different request streams.
 
-For more detailed information and usage instructions, please refer to the full documentation available at the `/doc` or `/redoc` endpoints when the service is running.
+For more detailed information and usage instructions, please refer to the full documentation available at the `/docs` or `/redoc` endpoints when the service is running.
