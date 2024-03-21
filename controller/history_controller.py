@@ -30,7 +30,14 @@ class HistoryController(BaseController):
                     message="No requests found.",
                 )
             return RequestData(**item)
-        return [RequestData(**d) for d in history.all()]
+
+        items = history.all()
+        if items is None:
+            return Answer(
+                status=Status.error,
+                message="No requests found.",
+            )
+        return [RequestData(**d) for d in items ]
 
     async def last_requests(
         self,
