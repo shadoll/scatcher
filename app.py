@@ -66,6 +66,7 @@ def check_namespace(namespace):
     if (
         namespace == "__history"
         or namespace == "__last_request"
+        or namespace == "__last"
         or namespace == "__clear"
         or namespace == "__help"
         or namespace == "docs"
@@ -139,7 +140,9 @@ def help():
 
 
 @app.get("/api/__last_request", status_code=status.HTTP_200_OK)
+@app.get("/api/__last}", status_code=status.HTTP_200_OK)
 @app.get("/api/__last_request/{namespace}", status_code=status.HTTP_200_OK)
+@app.get("/api/__last/{namespace}", status_code=status.HTTP_200_OK)
 async def last_requests(
     response: Response,
     namespace: str = "requests",
