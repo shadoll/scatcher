@@ -9,6 +9,7 @@ from unittest import IsolatedAsyncioTestCase
 from schema.methods import Methods
 from typing import Any
 
+
 class TestHistoryController(IsolatedAsyncioTestCase):
     def setUp(self):
         self.namespace = "test"
@@ -38,7 +39,11 @@ class TestHistoryController(IsolatedAsyncioTestCase):
     async def test_history_with_id_existing_request(self):
         self.history.add(self.request_data)
         response = Response()
-        result = await self.controller.history(response, id=0, namespace=self.namespace)
+        result = await self.controller.history(
+            response,
+            id=0,
+            namespace=self.namespace,
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(result, RequestData(**self.request_data))
 
@@ -46,7 +51,9 @@ class TestHistoryController(IsolatedAsyncioTestCase):
         self.history.clear()
         response = Response()
         result = await self.controller.history(
-            response=response, id=0, namespace=self.namespace
+            response=response,
+            id=0,
+            namespace=self.namespace,
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
@@ -62,6 +69,17 @@ class TestHistoryController(IsolatedAsyncioTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(result, [RequestData(**self.request_data)])
+
+    async def test_history_without_id_no_requests(self):
+        self.history.clear()
+        response = Response()
+        result = await self.controller.history(
+            response=response, namespace=self.namespace
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            result, Answer(status=Status.error, message="No requests found.")
+        )
 
     async def test_last_requests_invalid_namespace(self):
         response = Response()
