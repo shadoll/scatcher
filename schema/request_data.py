@@ -4,9 +4,9 @@ from schema.methods import Methods
 
 class RequestData(BaseModel):
     method: Methods = Methods.GET
-    data: dict|None = None
+    data: dict | None = None
     params: dict = {}
-    form: dict|None = None
+    form: dict | None = None
     url: str
     headers: dict = {}
     cookies: dict = {}
