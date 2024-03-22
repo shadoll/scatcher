@@ -36,8 +36,8 @@ class History:
         if len(self.data) == 0:
             return None
         for item in self.data:
-                if "method" in item:
-                    item["method"] = Methods(item["method"])
+            if "method" in item:
+                item["method"] = Methods(item["method"])
         return self.data
 
     def get(self, index: int) -> dict | None:
