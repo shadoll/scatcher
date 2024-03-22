@@ -21,13 +21,24 @@ class CatchController(BaseController):
         try:
             json = await request.json()
         except Exception:
-            json = {"invalid": "json"}
+            json = None
+
+        try:
+            form = await request.form()
+        except Exception:
+            form = None
+
+        http_version = request.scope.get("http_version")
 
         last_request = {
-            "data": json,
             "method": request.method,
+            "data": json,
+            "params": dict(request.query_params),
+            "form": form,
             "url": str(request.url),
             "headers": dict(request.headers),
+            "cookies": dict(request.cookies),
+            "http_version": http_version,
             "time": datetime.now().isoformat(),
         }
         history = History(namespace)

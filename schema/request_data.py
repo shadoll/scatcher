@@ -3,8 +3,12 @@ from schema.methods import Methods
 
 
 class RequestData(BaseModel):
-    data: dict
     method: Methods = Methods.GET
+    data: dict = {}
+    params: dict = {}
+    form: dict = {}
     url: str
-    headers: dict
+    headers: dict = {}
+    cookies: dict = {}
+    http_version: str = ""
     time: str
