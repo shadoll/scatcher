@@ -16,12 +16,12 @@ services:
       - ./schema:/app/schema
       - ./storage:/app/storage
     networks:
-      - "apps-proxy"
+      - apps-proxy
     labels:
       traefik.enable: true
       traefik.docker.network: apps-proxy
       traefik.http.routers.catcher.entrypoints: websecure
-      traefik.http.routers.catcher.rule: Host(`catcher.rs.shadoll.dev`)
+      traefik.http.routers.catcher.rule: Host(`$APP_URL`)
       traefik.http.routers.catcher.tls: true
       traefik.http.routers.catcher.tls.certresolver: letsencrypt
       traefik.http.services.catcher.loadbalancer.server.port: 8000
