@@ -1,0 +1,30 @@
+networks:
+  apps-proxy:
+    external: true
+    name: apps-proxy
+
+services:
+  catcher:
+    image: scatcher
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    networks:
+      - apps-proxy
+    ports:
+      - ${APP_DEBUG_PORT:-5678}:${APP_DEBUG_PORT:-5678}
+    labels:
+      traefik.enable: true
+      traefik.docker.network: apps-proxy
+      traefik.http.routers.catcher.entrypoints: websecure
+      traefik.http.routers.catcher.rule: Host(`$APP_URL`)
+      traefik.http.routers.catcher.tls: true
+      traefik.http.routers.catcher.tls.certresolver: letsencrypt
+      traefik.http.services.catcher.loadbalancer.server.port: 8000
+    command:
+      [
+        "sh", "-c",
+        "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:${APP_DEBUG_PORT:-5678} -m uvicorn app:app --reload --host 0.0.0.0 --port 8000",
+      ]
