@@ -11,6 +11,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./app.py:/app/app.py
+      - ./controller:/app/controller
+      - ./manager:/app/manager
+      - ./schema:/app/schema
       - ./storage:/app/storage
     networks:
       - "apps-proxy"
