@@ -9,6 +9,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     volumes:
       - ./app.py:/app/app.py
       - ./controller:/app/controller
