@@ -21,9 +21,9 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: apps-proxy
-      traefik.http.routers.catcher.entrypoints: websecure
-      traefik.http.routers.catcher.rule: Host(`$APP_URL`)
+      traefik.http.routers.catcher.entrypoints: web,websecure
+      traefik.http.routers.catcher.rule: Host(`$APP_URL`) || Host(`$APP_URL_2`) && !PathPrefix(`/.git`)
       traefik.http.routers.catcher.tls: true
       traefik.http.routers.catcher.tls.certresolver: letsencrypt
       traefik.http.services.catcher.loadbalancer.server.port: 8000
-
+      traefik.http.routers.catcher.middlewares: redirect-web-to-websecure@internal
